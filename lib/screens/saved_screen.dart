@@ -44,7 +44,6 @@ class SavedScreen extends StatelessWidget {
                               height: 128,
                               decoration: const BoxDecoration(
                                 color: Color(0xFFE5E7EB),
-                                shape: BoxShape.circle,
                               ),
                               child: const Icon(
                                 LucideIcons.inbox,
@@ -81,10 +80,7 @@ class SavedScreen extends StatelessWidget {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    color: const Color(0xFFE5E7EB)),
+                              color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.04),
@@ -156,7 +152,6 @@ class SavedScreen extends StatelessWidget {
                                           padding: const EdgeInsets.all(8),
                                           decoration: const BoxDecoration(
                                             color: Color(0xFFF3F4F6),
-                                            shape: BoxShape.circle,
                                           ),
                                           child: const Icon(
                                             LucideIcons.bookmark,

@@ -72,12 +72,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         color: isSelected
                             ? const Color(0xFF1F2937)
                             : Colors.white,
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                          color: isSelected
-                              ? const Color(0xFF1F2937)
-                              : const Color(0xFFD1D5DB),
-                        ),
                       ),
                       child: Text(
                         country,
@@ -127,12 +121,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         color: isSelected
                             ? const Color(0xFF1F2937)
                             : Colors.white,
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                          color: isSelected
-                              ? const Color(0xFF1F2937)
-                              : const Color(0xFFD1D5DB),
-                        ),
                       ),
                       child: Text(
                         ingredient,
@@ -177,8 +165,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.04),

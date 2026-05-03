@@ -28,19 +28,10 @@ class _MainScreenState extends State<MainScreen> {
         child: Container(
           width: 375,
           height: 812,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(40),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                blurRadius: 30,
-                offset: const Offset(0, 10),
-              ),
-            ],
-            border: Border.all(color: const Color(0xFF1F2937), width: 8),
           ),
-          clipBehavior: Clip.hardEdge,
+          clipBehavior: Clip.none,
           child: Column(
             children: [
               // Status Bar Mock
@@ -75,7 +66,6 @@ class _MainScreenState extends State<MainScreen> {
                           height: 12,
                           decoration: BoxDecoration(
                             color: const Color(0xFFD1D5DB),
-                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -84,7 +74,6 @@ class _MainScreenState extends State<MainScreen> {
                           height: 12,
                           decoration: BoxDecoration(
                             color: const Color(0xFFD1D5DB),
-                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ],
@@ -103,9 +92,6 @@ class _MainScreenState extends State<MainScreen> {
                 height: 64,
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  border: Border(
-                    top: BorderSide(color: Color(0xFFE5E7EB)),
-                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

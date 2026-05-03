@@ -91,8 +91,6 @@ class RecipeDetailScreen extends StatelessWidget {
                   child: Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(24)),
                     ),
                     padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
                     child: Column(
@@ -147,7 +145,6 @@ class RecipeDetailScreen extends StatelessWidget {
                                       height: 64,
                                       decoration: const BoxDecoration(
                                         color: Color(0xFFE5E7EB),
-                                        shape: BoxShape.circle,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
@@ -194,7 +191,6 @@ class RecipeDetailScreen extends StatelessWidget {
                                   margin: const EdgeInsets.only(top: 2),
                                   decoration: const BoxDecoration(
                                     color: Color(0xFF111827),
-                                    shape: BoxShape.circle,
                                   ),
                                   child: Center(
                                     child: Text(
@@ -243,9 +239,7 @@ class RecipeDetailScreen extends StatelessWidget {
                               foregroundColor: Colors.white,
                               padding:
                                   const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                              shape: const RoundedRectangleBorder(),
                               elevation: 3,
                             ),
                           ),
@@ -278,7 +272,6 @@ class _CircleButton extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.92),
-          shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -300,9 +293,8 @@ class _Badge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3F4F6),
-        borderRadius: BorderRadius.circular(999),
+      decoration: const BoxDecoration(
+        color: Color(0xFFF3F4F6),
       ),
       child: Text(
         text,
