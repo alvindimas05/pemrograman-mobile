@@ -148,7 +148,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
-                childAspectRatio: 0.8,
+                childAspectRatio: 0.7,
               ),
               itemCount: mockRecipes.length,
               itemBuilder: (context, index) {
@@ -184,16 +184,18 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           height: 128,
                           fit: BoxFit.cover,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Text(
-                            recipe.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                              color: Color(0xFF1F2937),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              recipe.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                                color: Color(0xFF1F2937),
+                              ),
                             ),
                           ),
                         ),
