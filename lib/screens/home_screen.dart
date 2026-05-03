@@ -74,11 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE5E7EB),
+                      ClipOval(
+                        child: Image.network(
+                          'https://picsum.photos/seed/${categories[index]}/70/70',
+                          width: 70,
+                          height: 70,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -142,10 +143,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Placeholder image
-                        Container(
+                        Image.network(
+                          'https://picsum.photos/seed/${randomRecipe.id}/600/300',
                           width: double.infinity,
                           height: 192,
-                          color: const Color(0xFFE5E7EB),
+                          fit: BoxFit.cover,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(16),

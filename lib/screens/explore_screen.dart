@@ -178,10 +178,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Thumbnail placeholder
-                        Container(
+                        Image.network(
+                          'https://picsum.photos/seed/${recipe.id}/400/200',
                           width: double.infinity,
                           height: 128,
-                          color: const Color(0xFFE5E7EB),
+                          fit: BoxFit.cover,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(12),

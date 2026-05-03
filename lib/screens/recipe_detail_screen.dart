@@ -47,10 +47,11 @@ class RecipeDetailScreen extends StatelessWidget {
                 Stack(
                   children: [
                     // Full-width placeholder image
-                    Container(
+                    Image.network(
+                      'https://picsum.photos/seed/${r.id}/800/600',
                       width: double.infinity,
                       height: 320,
-                      color: const Color(0xFFE5E7EB),
+                      fit: BoxFit.cover,
                     ),
 
                     // Back + Bookmark buttons
@@ -140,11 +141,12 @@ class RecipeDetailScreen extends StatelessWidget {
                                 width: 72,
                                 child: Column(
                                   children: [
-                                    Container(
-                                      width: 64,
-                                      height: 64,
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xFFE5E7EB),
+                                    ClipOval(
+                                      child: Image.network(
+                                        'https://picsum.photos/seed/${ingredient.name}/64/64',
+                                        width: 64,
+                                        height: 64,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
