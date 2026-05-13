@@ -178,7 +178,7 @@ class RecipeDetailScreen extends StatelessWidget {
                             width: double.infinity,
                             child: ElevatedButton.icon(
                               onPressed: () {
-                                print('Launch YouTube: \${meal.strYoutube}');
+                                print('Launch YouTube: ${meal.strYoutube}');
                               },
                               icon: const Icon(LucideIcons.youtube, size: 20),
                               label: const Text(
