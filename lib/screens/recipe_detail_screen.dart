@@ -1,41 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
-import '../data/mock_data.dart';
+import '../models/meal.dart';
 import '../providers/recipe_provider.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
-  final String recipeId;
+  final Meal meal;
 
-  const RecipeDetailScreen({super.key, required this.recipeId});
+  const RecipeDetailScreen({super.key, required this.meal});
 
   @override
   Widget build(BuildContext context) {
-    final recipe = mockRecipes.where((r) => r.id == recipeId).firstOrNull;
-
-    if (recipe == null) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Recipe not found.',
-                  style: TextStyle(color: Color(0xFF6B7280))),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Go Back'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    final r = recipe;
     return Consumer<RecipeProvider>(
       builder: (context, provider, _) {
-        final saved = provider.isSaved(r.id);
+        final saved = provider.isSaved(meal.idMeal);
 
         return Scaffold(
           backgroundColor: Colors.white,
@@ -46,12 +24,14 @@ class RecipeDetailScreen extends StatelessWidget {
                 // Image + header overlays
                 Stack(
                   children: [
-                    // Full-width placeholder image
                     Image.network(
-                      'https://picsum.photos/seed/${r.id}/800/600',
+                      meal.strMealThumb,
                       width: double.infinity,
                       height: 320,
                       fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        width: double.infinity, height: 320, color: Colors.grey,
+                      ),
                     ),
 
                     // Back + Bookmark buttons
@@ -71,8 +51,7 @@ class RecipeDetailScreen extends StatelessWidget {
                             ),
                           ),
                           _CircleButton(
-                            onTap: () =>
-                                provider.toggleSaveRecipe(r.id),
+                            onTap: () => provider.toggleSaveRecipe(meal),
                             child: Icon(
                               LucideIcons.bookmark,
                               size: 24,
@@ -86,7 +65,7 @@ class RecipeDetailScreen extends StatelessWidget {
                   ],
                 ),
 
-                // Content card (overlaps image slightly)
+                // Content card
                 Transform.translate(
                   offset: const Offset(0, -24),
                   child: Container(
@@ -97,9 +76,8 @@ class RecipeDetailScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Title & badges
                         Text(
-                          r.name,
+                          meal.strMeal,
                           style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
@@ -110,9 +88,9 @@ class RecipeDetailScreen extends StatelessWidget {
                         const SizedBox(height: 12),
                         Row(
                           children: [
-                            _Badge(r.category),
+                            _Badge(meal.strCategory),
                             const SizedBox(width: 8),
-                            _Badge(r.country),
+                            _Badge(meal.strArea),
                           ],
                         ),
 
@@ -132,30 +110,34 @@ class RecipeDetailScreen extends StatelessWidget {
                           height: 96,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
-                            itemCount: r.ingredients.length,
-                            separatorBuilder: (_, __) =>
-                                const SizedBox(width: 16),
+                            itemCount: meal.ingredients.length,
+                            separatorBuilder: (_, __) => const SizedBox(width: 16),
                             itemBuilder: (context, i) {
-                              final ingredient = r.ingredients[i];
+                              final ingredient = meal.ingredients[i];
+                              final measure = meal.measures.length > i ? meal.measures[i] : '';
                               return SizedBox(
                                 width: 72,
                                 child: Column(
                                   children: [
                                     ClipOval(
                                       child: Image.network(
-                                        'https://picsum.photos/seed/${ingredient.name}/64/64',
+                                        'https://www.themealdb.com/images/ingredients/$ingredient-Small.png',
                                         width: 64,
                                         height: 64,
                                         fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => Container(
+                                          width: 64, height: 64, color: Colors.grey,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      ingredient.name,
+                                      '$measure $ingredient',
                                       textAlign: TextAlign.center,
                                       overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
                                       style: const TextStyle(
-                                        fontSize: 11,
+                                        fontSize: 10,
                                         fontWeight: FontWeight.w500,
                                         color: Color(0xFF4B5563),
                                       ),
@@ -179,73 +161,42 @@ class RecipeDetailScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        ...r.steps.asMap().entries.map((entry) {
-                          final i = entry.key;
-                          final step = entry.value;
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 24,
-                                  height: 24,
-                                  margin: const EdgeInsets.only(top: 2),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFF111827),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '${i + 1}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Text(
-                                    step,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF374151),
-                                      height: 1.6,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
+                        Text(
+                          meal.strInstructions,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF374151),
+                            height: 1.6,
+                          ),
+                        ),
 
                         const SizedBox(height: 24),
 
                         // YouTube Button
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(LucideIcons.youtube, size: 20),
-                            label: const Text(
-                              'Watch Tutorial',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                        if (meal.strYoutube.isNotEmpty)
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                print('Launch YouTube: \${meal.strYoutube}');
+                              },
+                              icon: const Icon(LucideIcons.youtube, size: 20),
+                              label: const Text(
+                                'Watch Tutorial',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFDC2626),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                shape: const RoundedRectangleBorder(),
+                                elevation: 3,
                               ),
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFDC2626),
-                              foregroundColor: Colors.white,
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 14),
-                              shape: const RoundedRectangleBorder(),
-                              elevation: 3,
-                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -274,6 +225,7 @@ class _CircleButton extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.92),
+          shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
@@ -293,10 +245,12 @@ class _Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (text.isEmpty) return const SizedBox.shrink();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF3F4F6),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F4F6),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
         text,

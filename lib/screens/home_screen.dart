@@ -1,7 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../data/mock_data.dart';
+import 'package:provider/provider.dart';
+import '../providers/recipe_provider.dart';
 import 'recipe_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,216 +14,257 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _randomRecipeIndex = 0;
+  final TextEditingController _searchController = TextEditingController();
 
-  void _handleSurpriseMe() {
+  void _handleSurpriseMe(int max) {
+    if (max <= 1) return;
     setState(() {
       int nextIndex;
       do {
-        nextIndex = Random().nextInt(mockRecipes.length);
-      } while (nextIndex == _randomRecipeIndex && mockRecipes.length > 1);
+        nextIndex = Random().nextInt(max);
+      } while (nextIndex == _randomRecipeIndex);
       _randomRecipeIndex = nextIndex;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final randomRecipe = mockRecipes[_randomRecipeIndex];
+    return Consumer<RecipeProvider>(
+      builder: (context, provider, child) {
+        final categories = provider.categories;
+        final meals = provider.exploreMeals;
+        
+        // Ensure index is within bounds
+        if (meals.isNotEmpty && _randomRecipeIndex >= meals.length) {
+          _randomRecipeIndex = 0;
+        }
+        
+        final randomRecipe = meals.isNotEmpty ? meals[_randomRecipeIndex] : null;
 
-    return Container(
-      color: const Color(0xFFF9FAFB),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Search Bar
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE5E7EB),
-              ),
-              child: Row(
-                children: const [
-                  Icon(LucideIcons.search, color: Color(0xFF9CA3AF), size: 20),
-                  SizedBox(width: 12),
-                  Text(
-                    'Cari resep...',
-                    style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
+        return Container(
+          color: const Color(0xFFF9FAFB),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Search Bar
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE5E7EB),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Kategori Section
-            const Text(
-              'Kategori',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1F2937),
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 104,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 16),
-                itemBuilder: (context, index) {
-                  return Column(
+                  child: Row(
                     children: [
-                      ClipOval(
-                        child: Image.network(
-                          'https://picsum.photos/seed/${categories[index]}/70/70',
-                          width: 70,
-                          height: 70,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: 70,
-                        child: Text(
-                          categories[index],
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF4B5563),
+                      const Icon(LucideIcons.search, color: Color(0xFF9CA3AF), size: 20),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Cari resep...',
+                            hintStyle: TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
                           ),
+                          onSubmitted: (value) {
+                            provider.searchMeals(value);
+                          },
                         ),
                       ),
                     ],
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Resep Acak Section
-            const Text(
-              'Resep Acak',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1F2937),
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Floating Card
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        RecipeDetailScreen(recipeId: randomRecipe.id),
                   ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
                 ),
-                clipBehavior: Clip.hardEdge,
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Placeholder image
-                        Image.network(
-                          'https://picsum.photos/seed/${randomRecipe.id}/600/300',
-                          width: double.infinity,
-                          height: 192,
-                          fit: BoxFit.cover,
+
+                const SizedBox(height: 24),
+
+                // Kategori Section
+                const Text(
+                  'Kategori',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1F2937),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 104,
+                  child: categories.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          separatorBuilder: (_, __) => const SizedBox(width: 16),
+                          itemBuilder: (context, index) {
+                            final category = categories[index];
+                            return GestureDetector(
+                              onTap: () {
+                                provider.searchMeals(category.strCategory);
+                              },
+                              child: Column(
+                                children: [
+                                  ClipOval(
+                                    child: Image.network(
+                                      category.strCategoryThumb,
+                                      width: 70,
+                                      height: 70,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, __, ___) => Container(
+                                        width: 70, height: 70, color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  SizedBox(
+                                    width: 70,
+                                    child: Text(
+                                      category.strCategory,
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xFF4B5563),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
+                ),
+
+                const SizedBox(height: 24),
+
+                // Resep Acak Section
+                const Text(
+                  'Resep Acak',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1F2937),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Floating Card
+                if (provider.isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else if (randomRecipe != null)
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => RecipeDetailScreen(meal: randomRecipe),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Stack(
+                        children: [
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                randomRecipe.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Color(0xFF1F2937),
+                              Image.network(
+                                randomRecipe.strMealThumb,
+                                width: double.infinity,
+                                height: 192,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => Container(
+                                  width: double.infinity, height: 192, color: Colors.grey,
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                randomRecipe.country,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF6B7280),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      randomRecipe.strMeal,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Color(0xFF1F2937),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      randomRecipe.strArea,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
 
-                    // Surprise Me Button
-                    Positioned(
-                      top: 12,
-                      right: 12,
-                      child: GestureDetector(
-                        onTap: _handleSurpriseMe,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.92),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.08),
-                                blurRadius: 6,
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: const [
-                              Icon(LucideIcons.refreshCw,
-                                  size: 16, color: Color(0xFF374151)),
-                              SizedBox(width: 6),
-                              Text(
-                                'Surprise Me',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF374151),
+                          // Surprise Me Button
+                          Positioned(
+                            top: 12,
+                            right: 12,
+                            child: GestureDetector(
+                              onTap: () => _handleSurpriseMe(meals.length),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.92),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.08),
+                                      blurRadius: 6,
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: const [
+                                    Icon(LucideIcons.refreshCw, size: 16, color: Color(0xFF374151)),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      'Surprise Me',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF374151),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  )
+                else
+                  const Center(child: Text("Tidak ada resep ditemukan.")),
 
-            const SizedBox(height: 32),
-          ],
-        ),
-      ),
+                const SizedBox(height: 32),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

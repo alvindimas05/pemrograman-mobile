@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
-import '../data/mock_data.dart';
 import '../providers/recipe_provider.dart';
 import 'recipe_detail_screen.dart';
 
@@ -12,19 +11,16 @@ class SavedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RecipeProvider>(
       builder: (context, provider, _) {
-        final savedRecipes = mockRecipes
-            .where((r) => provider.savedRecipeIds.contains(r.id))
-            .toList();
+        final savedRecipes = provider.savedMeals;
 
         return Container(
           color: const Color(0xFFF9FAFB),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-                child: const Text(
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                child: Text(
                   'Saved',
                   style: TextStyle(
                     fontSize: 24,
@@ -65,22 +61,21 @@ class SavedScreen extends StatelessWidget {
                     : ListView.separated(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
                         itemCount: savedRecipes.length,
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(height: 12),
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           final recipe = savedRecipes[index];
                           return GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (_) => RecipeDetailScreen(
-                                      recipeId: recipe.id),
+                                  builder: (_) => RecipeDetailScreen(meal: recipe),
                                 ),
                               );
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                              color: Colors.white,
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.04),
@@ -95,28 +90,28 @@ class SavedScreen extends StatelessWidget {
                                   Row(
                                     children: [
                                       // Thumbnail
-                                      Container(
+                                      Image.network(
+                                        recipe.strMealThumb,
                                         width: 96,
                                         height: 96,
-                                        color: const Color(0xFFE5E7EB),
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => Container(
+                                          width: 96, height: 96, color: Colors.grey,
+                                        ),
                                       ),
 
                                       // Info
                                       Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              12, 12, 48, 12),
+                                          padding: const EdgeInsets.fromLTRB(12, 12, 48, 12),
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                recipe.name,
+                                                recipe.strMeal,
                                                 maxLines: 2,
-                                                overflow:
-                                                    TextOverflow.ellipsis,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 14,
@@ -125,7 +120,7 @@ class SavedScreen extends StatelessWidget {
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
-                                                recipe.country,
+                                                recipe.strCategory,
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   color: Color(0xFF6B7280),
@@ -145,13 +140,12 @@ class SavedScreen extends StatelessWidget {
                                     bottom: 0,
                                     child: Center(
                                       child: GestureDetector(
-                                        onTap: () =>
-                                            provider.toggleSaveRecipe(
-                                                recipe.id),
+                                        onTap: () => provider.toggleSaveRecipe(recipe),
                                         child: Container(
                                           padding: const EdgeInsets.all(8),
-                                          decoration: const BoxDecoration(
-                                            color: Color(0xFFF3F4F6),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFF3F4F6),
+                                            borderRadius: BorderRadius.circular(8),
                                           ),
                                           child: const Icon(
                                             LucideIcons.bookmark,
