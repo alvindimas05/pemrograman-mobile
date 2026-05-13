@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'home_screen.dart';
-import 'explore_screen.dart';
 import 'saved_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -16,7 +15,6 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    ExploreScreen(),
     SavedScreen(),
   ];
 
@@ -55,11 +53,6 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.home_outlined),
             activeIcon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_outlined),
-            activeIcon: Icon(Icons.explore),
-            label: 'Explore',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark_outline),

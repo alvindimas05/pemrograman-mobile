@@ -8,6 +8,9 @@ class RecipeProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
+  List<Meal> _randomMeals = [];
+  List<Meal> get randomMeals => _randomMeals;
+
   List<Meal> _exploreMeals = [];
   List<Meal> get exploreMeals => _exploreMeals;
 
@@ -22,8 +25,18 @@ class RecipeProvider extends ChangeNotifier {
 
   RecipeProvider() {
     loadCategories();
-    searchMeals(''); 
+    _initMeals();
     loadSavedMeals();
+  }
+
+  Future<void> _initMeals() async {
+    _isLoading = true;
+    notifyListeners();
+    final defaultMeals = await _apiService.searchMeals('');
+    _randomMeals = List.from(defaultMeals);
+    _exploreMeals = List.from(defaultMeals);
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> loadCategories() async {

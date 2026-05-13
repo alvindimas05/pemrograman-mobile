@@ -124,7 +124,7 @@ class RecipeDetailScreen extends StatelessWidget {
                                         'https://www.themealdb.com/images/ingredients/$ingredient-Small.png',
                                         width: 64,
                                         height: 64,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                         errorBuilder: (_, __, ___) => Container(
                                           width: 64, height: 64, color: Colors.grey,
                                         ),

@@ -33,13 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, provider, child) {
         final categories = provider.categories;
         final meals = provider.exploreMeals;
+        final randomMeals = provider.randomMeals;
         
         // Ensure index is within bounds
-        if (meals.isNotEmpty && _randomRecipeIndex >= meals.length) {
+        if (randomMeals.isNotEmpty && _randomRecipeIndex >= randomMeals.length) {
           _randomRecipeIndex = 0;
         }
         
-        final randomRecipe = meals.isNotEmpty ? meals[_randomRecipeIndex] : null;
+        final randomRecipe = randomMeals.isNotEmpty ? randomMeals[_randomRecipeIndex] : null;
 
         return Container(
           color: const Color(0xFFF9FAFB),
@@ -48,35 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Search Bar
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE5E7EB),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(LucideIcons.search, color: Color(0xFF9CA3AF), size: 20),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Cari resep...',
-                            hintStyle: TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
-                          ),
-                          onSubmitted: (value) {
-                            provider.searchMeals(value);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
 
-                const SizedBox(height: 24),
 
                 // Kategori Section
                 const Text(
@@ -109,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       category.strCategoryThumb,
                                       width: 70,
                                       height: 70,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.contain,
                                       errorBuilder: (_, __, ___) => Container(
                                         width: 70, height: 70, color: Colors.grey,
                                       ),
@@ -222,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             top: 12,
                             right: 12,
                             child: GestureDetector(
-                              onTap: () => _handleSurpriseMe(meals.length),
+                              onTap: () => _handleSurpriseMe(randomMeals.length),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                 decoration: BoxDecoration(
@@ -259,6 +232,131 @@ class _HomeScreenState extends State<HomeScreen> {
                 else
                   const Center(child: Text("Tidak ada resep ditemukan.")),
 
+                const SizedBox(height: 32),
+
+                // Explore Section
+                const Text(
+                  'Explore',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1F2937),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                
+                // Search Bar
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE5E7EB),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(LucideIcons.search, color: Color(0xFF9CA3AF), size: 20),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Cari resep...',
+                            hintStyle: TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
+                          ),
+                          onSubmitted: (value) {
+                            provider.searchMeals(value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                if (provider.isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else if (meals.isEmpty)
+                  const Center(child: Text('Tidak ada resep.'))
+                else
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemCount: meals.length,
+                    itemBuilder: (context, index) {
+                      final recipe = meals[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => RecipeDetailScreen(meal: recipe),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.04),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          clipBehavior: Clip.hardEdge,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.network(
+                                recipe.strMealThumb,
+                                width: double.infinity,
+                                height: 128,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => Container(
+                                  width: double.infinity, height: 128, color: Colors.grey,
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        recipe.strMeal,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 13,
+                                          color: Color(0xFF1F2937),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        recipe.strCategory,
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          color: Color(0xFF6B7280),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 const SizedBox(height: 32),
               ],
             ),
