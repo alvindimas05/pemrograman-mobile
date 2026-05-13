@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/meal.dart';
 import '../providers/recipe_provider.dart';
 
@@ -215,8 +216,11 @@ class RecipeDetailScreen extends StatelessWidget {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton.icon(
-                              onPressed: () {
-                                print('Launch YouTube: ${meal.strYoutube}');
+                              onPressed: () async {
+                                final uri = Uri.parse(meal.strYoutube);
+                                if (await canLaunchUrl(uri)) {
+                                  await launchUrl(uri, mode: LaunchMode.externalApplication);
+                                }
                               },
                               icon: const Icon(LucideIcons.youtube, size: 20),
                               label: const Text(
