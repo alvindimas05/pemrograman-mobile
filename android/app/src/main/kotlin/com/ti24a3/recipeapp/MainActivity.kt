@@ -1,4 +1,4 @@
-package com.example.pemrograman_mobile
+package com.ti24a3.recipeapp
 
 import io.flutter.embedding.android.FlutterActivity
 
