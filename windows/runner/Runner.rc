@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "pemrograman_mobile" "\0"
+            VALUE "CompanyName", "com.ti24a3" "\0"
+            VALUE "FileDescription", "recipe_app
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "pemrograman_mobile" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "pemrograman_mobile.exe" "\0"
-            VALUE "ProductName", "pemrograman_mobile" "\0"
+            VALUE "InternalName", "recipe_app
+            VALUE "LegalCopyright", "Copyright (C) 2026 com.ti24a3. All rights reserved." "\0"
+            VALUE "OriginalFilename", "recipe_app0"
+            VALUE "ProductName", "recipe_app
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
