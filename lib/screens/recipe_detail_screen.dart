@@ -161,13 +161,51 @@ class RecipeDetailScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Text(
-                          meal.strInstructions,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFF374151),
-                            height: 1.6,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: meal.strInstructions
+                              .split(RegExp(r'\r?\n'))
+                              .where((step) {
+                                final s = step.trim();
+                                return s.isNotEmpty && !RegExp(r'^(Step\s*\d+:?|\d+[\.\)]?)$', caseSensitive: false).hasMatch(s);
+                              })
+                              .toList()
+                              .asMap()
+                              .entries
+                              .map((entry) {
+                                final index = entry.key + 1;
+                                var stepText = entry.value.trim();
+                                stepText = stepText.replaceAll(RegExp(r'^(Step\s*\d+:?|\d+[\.\)]?)\s*', caseSensitive: false), '');
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '$index. ',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF374151),
+                                          height: 1.6,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          stepText,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Color(0xFF374151),
+                                            height: 1.6,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              })
+                              .toList(),
                         ),
 
                         const SizedBox(height: 24),
