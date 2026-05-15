@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  'Temukan resep favoritmu',
+                                  'Find your favorite recipes',
                                   style: GoogleFonts.outfit(
                                     fontSize: 13,
                                     color: _textSecondary,
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 14),
-                              hintText: 'Cari resep...',
+                              hintText: 'Search recipes...',
                               hintStyle: GoogleFonts.outfit(
                                 fontSize: 14,
                                 color: _textSecondary,
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         horizontal: 12),
                                   ),
                                   child: Text(
-                                    'Cari',
+                                    'Search',
                                     style: GoogleFonts.outfit(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 28, 20, 12),
-                  child: _SectionTitle('Kategori'),
+                  child: _SectionTitle('Categories'),
                 ),
               ),
               SliverToBoxAdapter(
@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 28, 20, 12),
-                  child: _SectionTitle('Resep Acak'),
+                  child: _SectionTitle('Random Recipes'),
                 ),
               ),
               SliverToBoxAdapter(
@@ -433,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             )
                           : Center(
                               child: Text(
-                                'Tidak ada resep ditemukan.',
+                                'No recipes found.',
                                 style: GoogleFonts.outfit(color: _textSecondary),
                               ),
                             ),
@@ -459,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(32),
                     child: Center(
                       child: Text(
-                        'Tidak ada resep.',
+                        'No recipes.',
                         style: GoogleFonts.outfit(color: _textSecondary),
                       ),
                     ),

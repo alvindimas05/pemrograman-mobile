@@ -37,7 +37,7 @@ class SavedScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Tersimpan',
+                              'Saved',
                               style: GoogleFonts.outfit(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w800,
@@ -47,8 +47,8 @@ class SavedScreen extends StatelessWidget {
                             ),
                             Text(
                               savedRecipes.isEmpty
-                                  ? 'Belum ada resep tersimpan'
-                                  : '${savedRecipes.length} resep',
+                                  ? 'No saved recipes yet'
+                                  : '${savedRecipes.length} recipes',
                               style: GoogleFonts.outfit(
                                 fontSize: 13,
                                 color: _textSecondary,
@@ -96,7 +96,7 @@ class SavedScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              'Belum ada resep tersimpan',
+                              'No saved recipes yet',
                               style: GoogleFonts.outfit(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -105,7 +105,7 @@ class SavedScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 6),
                             Text(
-                              'Simpan resep favoritmu dari Home',
+                              'Save your favorite recipes from Home',
                               style: GoogleFonts.outfit(
                                 fontSize: 13,
                                 color: _textSecondary,

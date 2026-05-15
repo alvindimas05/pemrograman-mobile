@@ -64,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
                   index: 1,
                   current: _currentIndex,
                   icon: Icons.bookmark_rounded,
-                  label: 'Tersimpan',
+                  label: 'Saved',
                   onTap: (i) => setState(() => _currentIndex = i),
                 ),
               ],

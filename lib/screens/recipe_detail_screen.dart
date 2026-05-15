@@ -122,8 +122,8 @@ class RecipeDetailScreen extends StatelessWidget {
                       const SizedBox(height: 28),
 
                       // ── Bahan-Bahan ────────────────────────────────────
-                      _SectionHeader('Bahan-Bahan',
-                          '${meal.ingredients.length} item'),
+                      _SectionHeader('Ingredients',
+                          '${meal.ingredients.length} items'),
                       const SizedBox(height: 14),
                       SizedBox(
                         height: 106,
@@ -198,7 +198,7 @@ class RecipeDetailScreen extends StatelessWidget {
                       const SizedBox(height: 28),
 
                       // ── Cara Memasak ───────────────────────────────────
-                      _SectionHeader('Cara Memasak', null),
+                      _SectionHeader('Cooking Instructions', null),
                       const SizedBox(height: 14),
 
                       ...meal.strInstructions
