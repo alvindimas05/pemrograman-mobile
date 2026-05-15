@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Resep App',
+                                  'Gourmet Debut',
                                   style: GoogleFonts.outfit(
                                     fontSize: 26,
                                     fontWeight: FontWeight.w800,
