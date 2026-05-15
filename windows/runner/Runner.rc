@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.ti24a3" "\0"
-            VALUE "FileDescription", "recipe_app
+            VALUE "FileDescription", "gourmet_debut
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "recipe_app
+            VALUE "InternalName", "gourmet_debut
             VALUE "LegalCopyright", "Copyright (C) 2026 com.ti24a3. All rights reserved." "\0"
-            VALUE "OriginalFilename", "recipe_app0"
-            VALUE "ProductName", "recipe_app
+            VALUE "OriginalFilename", "gourmet_debut0"
+            VALUE "ProductName", "gourmet_debut
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

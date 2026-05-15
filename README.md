@@ -1,4 +1,4 @@
-# recipe_app
+# gourmet_debut
 
 A new Flutter project.
 

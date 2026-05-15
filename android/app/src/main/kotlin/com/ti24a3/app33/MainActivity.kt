@@ -1,4 +1,4 @@
-package com.ti24a3.recipe_app
+package com.ti24a3.app33
 
 import io.flutter.embedding.android.FlutterActivity
 

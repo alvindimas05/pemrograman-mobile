@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => RecipeProvider(),
       child: MaterialApp(
-        title: 'Recipe App',
+        title: 'Gourmet Debut',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(

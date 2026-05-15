@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Recipe App"
+        android:label="Gourmet Debut"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
